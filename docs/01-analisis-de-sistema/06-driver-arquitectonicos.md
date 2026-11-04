@@ -1,0 +1,14 @@
+# Drivers Arquitectónicos
+
+Los drivers arquitectónicos son aquellos requerimientos, atributos de calidad y restricciones que ejercen la mayor influencia sobre las decisiones de diseño y la estructura del sistema.
+
+| ID | Driver Arquitectónico | Origen | ¿Por qué influye en la arquitectura? |
+| :--- | :--- | :--- | :--- |
+| **DA01** | **Disponibilidad 99.95% y tolerancia a fallas** | AC01 - Disponibilidad | Obliga a desplegar instancias redundantes sin estado (*stateless*) tras un balanceador de carga, con reinicio automático de contenedores y réplica activa de base de datos. |
+| **DA02** | **Ráfagas de alta concurrencia (pico de apertura de agenda ~5,000 concurrentes)** | AC03 - Escalabilidad; AC02 - Rendimiento | Impone una capa de caché de lectura distribuida en Redis para absorber la avalancha de consultas de disponibilidad, evitando la saturación de conexiones a PostgreSQL. |
+| **DA03** | **Prevención absoluta de doble agendamiento (Consistencia estricta de cupos)** | AC04 - Consistencia; RC05 - Anti-doble reserva | Obliga a utilizar transacciones ACID con bloqueo transaccional (`SELECT ... FOR UPDATE` o bloqueo distribuido en Redis con TTL de reserva de 5 minutos) en el núcleo de reserva de citas. |
+| **DA04** | **Baja latencia en consultas y reservas (< 300 ms lectura / < 800 ms reserva)** | AC02 - Rendimiento | Al procesar la reserva dentro del mismo proceso en memoria, se eliminan múltiples saltos de red (*network hops*) y la sobrecarga de serialización HTTP entre microservicios. |
+| **DA05** | **Desacoplamiento asíncrono de tareas no críticas (Notificaciones e integraciones)** | AC07 - Tolerancia a fallos; RC06 | Exige la integración de una cola de mensajería (RabbitMQ o Redis Streams) para que el envío de recordatorios por WhatsApp/SMS y sincronizaciones con MINSA ocurran en segundo plano sin congelar la respuesta al usuario. |
+| **DA06** | **Modularidad y aislamiento de dominios (Preparación para futura extracción)** | AC06 - Mantenibilidad; RC04 | Condiciona la estructura interna mediante **Arquitectura Hexagonal (Puertos y Adaptadores)** dentro de cada módulo (`citas`, `agenda`, `pacientes`, `notificaciones`), garantizando que la lógica de negocio no dependa de la base de datos ni de frameworks externos. |
+| **DA07** | **Seguridad y privacidad de datos médicos sensibles** | AC05 - Seguridad; RC01 - Ley N.° 29733 | Obliga a implementar autenticación mediante tokens JWT firmados, control de acceso por roles (RBAC), hash seguro de contraseñas (Argon2 / bcrypt), cifrado TLS 1.3 y registro inmutable de auditoría para cada transacción. |
+| **DA08** | **Interoperabilidad con estándares sanitarios (HL7 FHIR)** | RC02 - Interoperabilidad | Influye en el modelado de datos de las entidades del dominio (`Cita` alineada a `Appointment`, `Turno` alineado a `Slot` y `Agenda` a `Schedule`), simplificando la sincronización futura con la HCE hospitalaria. |

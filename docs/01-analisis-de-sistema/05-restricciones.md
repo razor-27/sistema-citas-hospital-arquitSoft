@@ -1,0 +1,14 @@
+# Restricciones del Sistema
+
+A continuación se listan las restricciones técnicas, normativas, operativas y de integración que condicionan la arquitectura del sistema de citas médicas.
+
+| ID | Restricción | Tipo | Descripción |
+| :--- | :--- | :--- | :--- |
+| **RC01** | **Cumplimiento de la Ley N.° 29733 (Protección de Datos Personales)** | Legal / Regulatoria | Los datos de filiación del paciente y las citas asociadas a especialidades médicas sensibles deben tratarse como información confidencial. Debe existir consentimiento informado, cifrado en tránsito/reposo y derecho de acceso/rectificación. |
+| **RC02** | **Interoperabilidad con Estándares de Salud** | Técnica / Normativa | El modelo de datos de citas médicas debe contemplar compatibilidad con el estándar **HL7 FHIR (Recurso `Appointment`, `Schedule`, `Slot`)** para facilitar la integración futura con el sistema de Historia Clínica Electrónica (HCE) y la plataforma nacional del MINSA. |
+| **RC03** | **Omnicanalidad de Acceso** | Funcional / Operativa | El sistema debe ofrecer interfaces responsivas accesibles desde navegadores web (escritorio y móviles), aplicativo móvil y terminales de escritorio para el personal de admisión del hospital. |
+| **RC04** | **Arquitectura de Monolito Modular con Contratos Claros** | Arquitectónica | La solución debe construirse como una única aplicación modular (código unificado con módulos encapsulados mediante puertos e interfaces), evitando la sobrecarga de orquestación de múltiples microservicios independientes. |
+| **RC05** | **Garantía Anti-Doble Reserva (Atomicidad de Cupo)** | Técnica | El mecanismo de reserva debe implementar control de concurrencia a nivel de base de datos (`SELECT FOR UPDATE` o bloqueo optimista) y/o bloqueo distribuido en Redis, imposibilitando que dos peticiones concurrentes reserven el mismo cupo médico. |
+| **RC06** | **Desacoplamiento de Notificaciones e Integraciones Externas** | Técnica | Cualquier interacción con pasarelas de terceros (SMS, WhatsApp, RENIEC, SUSALUD, SIS) debe ser no bloqueante y gestionada asíncronamente para evitar que la lentitud o caída de un servicio externo interrumpa la reserva del paciente. |
+| **RC07** | **Contenerización y Portabilidad Cloud-Agnostic** | Operativa / Infraestructura | Toda la solución (servidor de aplicación, base de datos, caché y colas) debe estructurarse mediante contenedores Docker y recetas Docker Compose / Helm para ejecutarse en infraestructura local (*on-premises*) del hospital o en cualquier nube pública. |
+| **RC08** | **Control de Versiones y Trazabilidad de Cambios** | Operativa / Desarrollo | El código y los scripts de migración de base de datos deben gestionarse en un repositorio Git único (*monorepo* modular) con integración continua (CI) y pruebas unitarias/de integración automatizadas. |
