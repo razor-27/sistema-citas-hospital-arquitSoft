@@ -22,3 +22,8 @@ Hospital de Huamanga (Ayacucho, Perú).
 5. [Restricciones](docs/01-analisis-de-sistema/05-restricciones.md): Normativa peruana Ley N.° 29733, estándar HL7 FHIR, portabilidad y omnicanalidad.
 6. [Drivers Arquitectónicos](docs/01-analisis-de-sistema/06-driver-arquitectonicos.md): DA01 a DA08 y justificación de impacto arquitectónico.
 7. [Decisiones Arquitectónicas (ADR)](docs/01-analisis-de-sistema/07-decisiones.md): Registro de decisiones ADR-001 a ADR-010 (Monolito modular, locking distribuido, caché e inversión de dependencias).
+
+### 2. Arquitectura de Software
+- [Arquitectura Inicial](docs/02-arquitectura-software/arquitectura-inicial.md): Visión global por capas (Presentación, Balanceo, Monolito Modular, Persistencia y Sistemas Externos).
+- [Estilo Arquitectónico](docs/02-arquitectura-software/estilo-arquitectonico.md): Topología de despliegue horizontal *stateless*, failover y metas RTO/RPO.
+- [Enfoque Arquitectónico](docs/02-arquitectura-software/enfoque-arquitectonico.md): Arquitectura Hexagonal (Puertos y Adaptadores) aplicada al núcleo de citas.
