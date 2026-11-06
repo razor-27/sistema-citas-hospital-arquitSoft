@@ -1,221 +1,99 @@
 # Nivel 4 · Diagrama de Código
 
-> **Proyecto:** Sistema de Citas Médicas Escalable · Hospital de Huamanga  
-> **Modelo:** C4 · Nivel 4 de 4 · **Notación:** Diagrama de Clases UML  
-> **Flujo Detallado:** Reservar Cita Médica con Control de Concurrencia y Bloqueo Distribuido
+> **Proyecto:** Sistema de Citas Médicas Escalable · **Módulos Detallados:** Citas y Agenda  
+> **Modelo:** C4 · Nivel 4 de 4 · **Notación:** UML · **Versión:** 1.0
 
 ---
 
 ## 1. Objetivo
 
-Mostrar la **organización detallada del código orientado a objetos**: clases, interfaces, métodos y cómo colaboran en el flujo de mayor criticidad del sistema: **Reservar Cita Médica**. Este flujo garantiza la atomicidad y la prevención absoluta de doble agendamiento (*race conditions*) bajo alta concurrencia.
+Mostrar **cómo está organizado el código** de los componentes del nivel 3: sus clases, interfaces y cómo colaboran temporalmente. Se detalla el flujo de mayor impacto: **Reservar Cita Médica**, que involucra a los módulos **Citas** y **Agenda**, el bloqueo distribuido en Redis y la persistencia en PostgreSQL.
 
 | Aspecto | Descripción |
 | :--- | :--- |
-| **Pregunta que responde** | ¿Cuáles son las clases, métodos y relaciones exactas que ejecutan la reserva de citas? |
+| **Pregunta que responde** | ¿Qué clases existen dentro del módulo de citas y cómo colaboran en el tiempo? |
 | **Audiencia** | Desarrolladores de software y evaluadores técnicos |
-| **Nivel anterior** | [`Nivel3-DiagramadeComponentes.md`](Nivel3-DiagramadeComponentes.md) |
-| **Detalle de implementación** | [`diseño-interno-de-modulos.md`](../03-diseño-de-software/diseño-interno/diseño-interno-de-modulos.md) |
+| **Notación** | UML (Diagrama de clases y Diagrama de secuencia). El modelo C4 recomienda UML para este nivel |
+| **Por qué estos dos módulos** | El nivel 4 es opcional en C4 y se dibuja solo para los módulos más críticos. Citas y Agenda concentran las reglas de negocio de cupos, el control de concurrencia y las integraciones |
+| **Nivel anterior** | [`Nivel3-Diagrama-de-Componentes.md`](Nivel3-Diagrama-de-Componentes.md) |
 
 ---
 
-## 2. Diagrama de Clases (UML)
+## 2. Diagrama de Clases
 
-```mermaid
-classDiagram
-    direction LR
+![Diagrama de clases de los módulos Citas y Agenda](../../img/nivel4-clases.png)
 
-    class CitaController {
-        +reservar(req: Request, res: Response): Promise~Response~
-    }
+### 2.1 Capas de Clean Architecture
 
-    class ReservarCitaUseCase {
-        -citaRepo: CitaRepositoryPort
-        -turnoRepo: TurnoSlotPort
-        -lockService: DistributedLockPort
-        -politicaService: PoliticaReservaService
-        -eventPublisher: EventPublisherPort
-        +ejecutar(cmd: ReservarCitaDTO): Promise~CitaResponseDTO~
-    }
+| Capa | Contiene | Regla |
+| :--- | :--- | :--- |
+| **Presentación** | `CitaController`, `AdmisionCitaController` | Traduce peticiones HTTP a llamadas de casos de uso y viceversa. |
+| **Aplicación** | `ReservarCitaUseCase`, `ReservarCitaDTO` | Coordina los pasos de la reserva; no conoce librerías de infraestructura. |
+| **Dominio** | `Cita`, `TurnoSlot`, `PoliticaReservaService`, Puertos | Contiene las reglas del hospital; no importa nada de las capas externas. |
+| **Infraestructura** | Repositorios (`Postgres*`), Adaptador Redis, Broker | Implementa las interfaces del dominio con tecnologías concretas. |
 
-    class PoliticaReservaService {
-        +validarElegibilidadPaciente(pacienteId, especialidadId): Promise~void~
-        +validarAntelacionMinima(fechaHora): boolean
-    }
+> **Regla de Dependencia:** Las flechas del código apuntan hacia el Dominio. Las clases de infraestructura implementan interfaces del dominio (triángulo hueco); el dominio nunca conoce a la infraestructura.
 
-    class Cita {
-        +id: string
-        +codigoReserva: CodigoReserva
-        +pacienteId: string
-        +slotId: string
-        +medicoId: string
-        +especialidadId: string
-        +fechaHora: Date
-        -estado: EstadoCita
-        +crear(props): Cita$
-        +confirmar(): void
-        +cancelar(motivo: string): void
-        +realizarCheckIn(): void
-    }
+### 2.2 Clases del Módulo Citas
 
-    class TurnoSlot {
-        +id: string
-        +medicoId: string
-        +consultorioId: string
-        +horario: HorarioConsulta
-        -estadoSlot: EstadoSlot
-        +estaDisponible(): boolean
-        +marcarComoReservado(): void
-        +liberar(): void
-    }
-
-    class EstadoCita {
-        <<enumeration>>
-        RESERVADA
-        CONFIRMADA
-        EN_SALA
-        ATENDIDA
-        CANCELADA
-        NO_ASISTIO
-    }
-
-    class EstadoSlot {
-        <<enumeration>>
-        DISPONIBLE
-        BLOQUEADO_TEMPORAL
-        RESERVADO
-        INACTIVO
-    }
-
-    class CitaRepositoryPort {
-        <<interface>>
-        +guardar(cita: Cita): Promise~Cita~
-        +buscarPorId(id: string): Promise~Cita~
-        +buscarPorCodigo(codigo: string): Promise~Cita~
-    }
-
-    class TurnoSlotPort {
-        <<interface>>
-        +obtenerPorIdConBloqueo(id: string): Promise~TurnoSlot~
-        +actualizar(slot: TurnoSlot): Promise~void~
-    }
-
-    class DistributedLockPort {
-        <<interface>>
-        +adquirirLock(recurso: string, ttlMs: number): Promise~boolean~
-        +liberarLock(recurso: string): Promise~void~
-    }
-
-    class EventPublisherPort {
-        <<interface>>
-        +publicar(evento: DomainEvent): Promise~void~
-    }
-
-    class PostgresCitaRepository
-    class PostgresTurnoSlotRepository
-    class RedisDistributedLockAdapter
-    class RabbitMQEventPublisherAdapter
-
-    CitaController ..> ReservarCitaUseCase : invoca
-    ReservarCitaUseCase --> CitaRepositoryPort
-    ReservarCitaUseCase --> TurnoSlotPort
-    ReservarCitaUseCase --> DistributedLockPort
-    ReservarCitaUseCase --> EventPublisherPort
-    ReservarCitaUseCase --> PoliticaReservaService
-    ReservarCitaUseCase ..> Cita : crea
-    ReservarCitaUseCase ..> TurnoSlot : modifica
-
-    Cita --> EstadoCita
-    TurnoSlot --> EstadoSlot
-
-    PostgresCitaRepository ..|> CitaRepositoryPort
-    PostgresTurnoSlotRepository ..|> TurnoSlotPort
-    RedisDistributedLockAdapter ..|> DistributedLockPort
-    RabbitMQEventPublisherAdapter ..|> EventPublisherPort
-```
-
----
-
-## 3. Catálogo de Clases e Interfaces
-
-| Elemento | Capa | Tipo | Responsabilidad |
+| Clase | Tipo | Capa | Responsabilidad |
 | :--- | :--- | :--- | :--- |
-| `CitaController` | Presentación | Clase | Maneja la petición HTTP `POST /api/v1/citas`, valida el esquema del cuerpo con DTOs y retorna `201 Created` o `409 Conflict`. |
-| `ReservarCitaUseCase` | Aplicación | Clase | Orquesta de manera secuencial y segura el flujo de reserva (adquisición del lock, validaciones de dominio, persistencia transaccional y publicación de evento). |
-| `PoliticaReservaService` | Dominio | Servicio de Dominio | Encapsula reglas de negocio complejas del hospital (máximo de citas activas por paciente en el mes, restricciones de cruce de horario). |
-| `Cita` | Dominio | Entidad Raíz de Agregado | Protege los invariantes del ciclo de vida de la cita, asigna el código único y gestiona las transiciones válidas de estado. |
-| `TurnoSlot` | Dominio | Entidad | Representa el cupo físico/temporal en un consultorio específico con un médico; garantiza que no se reserve si no está disponible. |
-| `EstadoCita` | Dominio | Enumeración | Define los estados posibles: `RESERVADA`, `CONFIRMADA`, `EN_SALA`, `ATENDIDA`, `CANCELADA`, `NO_ASISTIO`. |
-| `CitaRepositoryPort` | Dominio | Interfaz | Contrato abstracto para guardar y consultar citas sin acoplarse al driver de base de datos. |
-| `TurnoSlotPort` | Dominio | Interfaz | Contrato para la lectura y actualización de cupos con soporte de bloqueo pesimista en SQL (`SELECT FOR UPDATE`). |
-| `DistributedLockPort` | Dominio | Interfaz | Contrato de candado distribuido para sincronización concurrente entre múltiples instancias de backend. |
-| `EventPublisherPort` | Dominio | Interfaz | Contrato para publicar eventos de dominio (`CitaReservadaEvent`). |
-| `PostgresCitaRepository` | Infraestructura | Adaptador | Implementa `CitaRepositoryPort` utilizando transacciones ACID en PostgreSQL. |
-| `RedisDistributedLockAdapter` | Infraestructura | Adaptador | Implementa `DistributedLockPort` ejecutando primitivas atómicas en Redis (`SET NX PX`). |
-| `RabbitMQEventPublisherAdapter`| Infraestructura | Adaptador | Implementa `EventPublisherPort` publicando el evento al broker de mensajería para el envío de notificaciones. |
+| `CitaController` | Controlador | Presentación | Recibe `POST /api/v1/citas` de la web/app y responde al paciente. |
+| `AdmisionCitaController` | Controlador | Presentación | Gestiona citas presenciales en ventanilla y autoriza sobrecupos. |
+| `ReservarCitaUseCase` | Caso de uso | Aplicación | Orquesta la adquisición del lock en Redis, valida reglas, persiste en PostgreSQL y emite eventos. |
+| `Cita` | Entidad (Agregado Raíz) | Dominio | Aplica las reglas de estado de la cita (`RESERVADA → CONFIRMADA → EN_SALA → ATENDIDA`). |
+| `PoliticaReservaService` | Servicio de Dominio | Dominio | Valida que el paciente no registre cruces de horario ni sobrepase topes mensuales. |
+| `CitaRepositoryPort` | Interfaz (Puerto) | Dominio | Contrato abstracto para guardar y consultar citas médicas. |
+| `DistributedLockPort` | Interfaz (Puerto) | Dominio | Contrato abstracto para adquirir y liberar candados de cupo. |
+| `PostgresCitaRepository` | Repositorio | Infraestructura | Implementa `CitaRepositoryPort` ejecutando transacciones SQL en PostgreSQL. |
+| `RedisDistributedLockAdapter`| Adaptador | Infraestructura | Implementa `DistributedLockPort` mediante comandos atómicos `SET NX PX` en Redis. |
+
+### 2.3 Clases del Módulo Agenda
+
+| Clase | Tipo | Capa | Responsabilidad |
+| :--- | :--- | :--- | :--- |
+| `TurnoSlot` | Entidad | Dominio | Modela el cupo de atención con médico, horario y consultorio; controla su disponibilidad. |
+| `TurnoSlotPort` | Interfaz (Puerto) | Dominio | Contrato para consultar y actualizar el estado del cupo con soporte de bloqueo SQL. |
+| `PostgresTurnoSlotRepository`| Repositorio | Infraestructura | Implementa `TurnoSlotPort` con `SELECT ... FOR UPDATE` en PostgreSQL. |
+
+### 2.4 Notación UML Utilizada
+
+| Símbolo | Significado | Ejemplo en el diagrama |
+| :--- | :--- | :--- |
+| Línea continua con flecha abierta | Asociación: la clase tiene una referencia a la otra | `ReservarCitaUseCase` → `CitaRepositoryPort` |
+| Línea discontinua con flecha abierta | Dependencia: la usa o la crea | `ReservarCitaUseCase` «crea» `Cita` |
+| Línea discontinua con triángulo hueco | Realización: implementa una interfaz | `PostgresCitaRepository` ▷ `CitaRepositoryPort` |
+| Rombo relleno | Composición: la parte no existe sin el todo | `Cita` ◆ `CodigoReserva` |
+| Nombre en cursiva con «interface» | Interfaz (contrato sin implementación) | `DistributedLockPort` |
+| `-` y `+` | Atributo o método privado y público | `- estado`, `+ confirmar()` |
 
 ---
 
-## 4. Diagrama de Secuencia del Flujo de Reserva
+## 3. Diagrama de Secuencia: Flujo de Reserva Atómica
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor P as Paciente / Cliente Web
-    participant C as CitaController
-    participant UC as ReservarCitaUseCase
-    participant Lock as RedisDistributedLockAdapter
-    participant TurnoRepo as PostgresTurnoSlotRepository
-    participant Pol as PoliticaReservaService
-    participant CitaRepo as PostgresCitaRepository
-    participant Bus as RabbitMQEventPublisherAdapter
+![Diagrama de secuencia de reserva de cita](../../img/nivel4-secuencia.png)
 
-    P->>C: POST /api/v1/citas (slotId, pacienteId, especialidadId)
-    C->>UC: ejecutar(ReservarCitaDTO)
-    
-    rect rgb(240, 248, 255)
-        note over UC,Lock: 1. Control de Concurrencia (Mutex)
-        UC->>Lock: adquirirLock("lock:slot:4580", 10000ms)
-        alt Candado ya tomado por otro usuario
-            Lock-->>UC: false
-            UC-->>C: ConflictoReservaException
-            C-->>P: HTTP 409 Conflict ("Cupo en proceso por otro usuario")
-        else Candado adquirido exitosamente
-            Lock-->>UC: true
-        end
-    end
-
-    rect rgb(255, 250, 240)
-        note over UC,TurnoRepo: 2. Verificación de Cupo y Políticas
-        UC->>TurnoRepo: obtenerPorIdConBloqueo(slotId)
-        TurnoRepo-->>UC: TurnoSlot (DISPONIBLE)
-        UC->>Pol: validarElegibilidadPaciente(pacienteId, especialidadId)
-        Pol-->>UC: OK (Sin cruces ni límites excedidos)
-    end
-
-    rect rgb(240, 255, 240)
-        note over UC,CitaRepo: 3. Transacción ACID de Persistencia
-        UC->>TurnoSlot: marcarComoReservado()
-        UC->>TurnoRepo: actualizar(TurnoSlot)
-        UC->>Cita: crear(props)
-        UC->>CitaRepo: guardar(nuevaCita)
-        CitaRepo-->>UC: Cita guardada (ID: cita-9981)
-    end
-
-    rect rgb(255, 245, 245)
-        note over UC,Bus: 4. Despacho Asíncrono y Liberación
-        UC->>Bus: publicar(CitaReservadaEvent)
-        UC->>Lock: liberarLock("lock:slot:4580")
-    end
-
-    UC-->>C: CitaResponseDTO
-    C-->>P: HTTP 201 Created (Comprobante y Código de Reserva)
-```
+| Paso | Origen → Destino | Acción Realizada |
+| :--- | :--- | :--- |
+| 1 | Paciente Web → `CitaController` | Envía `POST /api/v1/citas` con `slotId`, `pacienteId` y `especialidadId`. |
+| 2 | `CitaController` → `ReservarCitaUseCase` | Ejecuta el caso de uso con los datos validados. |
+| 3–4 | `ReservarCitaUseCase` → `RedisLockAdapter` | Solicita candado distribuido `lock:slot:4580` por 10 segundos. Redis responde `true` (concedido). Si estuviera ocupado, rechaza inmediatamente con `409 Conflict`. |
+| 5–6 | `ReservarCitaUseCase` → `PostgresTurnoRepo` | Consulta el cupo con bloqueo pesimista en base de datos; retorna `TurnoSlot (DISPONIBLE)`. |
+| 7–8 | `ReservarCitaUseCase` → `PoliticaReservaService` | Valida reglas clínicas (sin cruce de turnos ni límite mensual excedido). |
+| 9 | `ReservarCitaUseCase` → `TurnoSlot` | Marca el cupo como `RESERVADO`. |
+| 10–11 | `ReservarCitaUseCase` → `PostgresCitaRepo` | Crea y guarda la entidad `Cita` en PostgreSQL bajo transacción ACID. |
+| 12 | `ReservarCitaUseCase` → `RabbitMQEventPub` | Publica `CitaReservadaEvent` en la cola de mensajería. |
+| 13–14 | `ReservarCitaUseCase` → `RedisLockAdapter` | Libera el candado distribuido de Redis. |
+| 15–16 | `CitaController` → Paciente Web | Responde `201 Created` con el número y comprobante de reserva (< 500 ms). |
+| 17 | `RabbitMQEventPub` → Workers | En segundo plano, los workers consumen el evento y despachan el WhatsApp al paciente. |
 
 ---
 
-## 5. Reglas de Implementación en Código
+## 4. Patrones y Principios que se ven en este Nivel
 
-1. **Aislamiento Absoluto de Dominio:** Ninguna clase dentro de `dominio/` puede importar librerías de infraestructura como TypeORM, Prisma, Redis o Express.
-2. **Atomicidad:** La actualización del `TurnoSlot` y el guardado de la `Cita` se ejecutan dentro del mismo bloque de transacción de base de datos. Si una falla, se hace rollback automático de ambas.
-3. **Liberación Garantizada del Candado:** La llamada a `liberarLock` reside dentro de un bloque `finally`, garantizando que el cupo nunca quede bloqueado indefinidamente aun si ocurre una excepción imprevista.
+| Elemento del Diagrama | Patrón o Principio Aplicado |
+| :--- | :--- |
+| `PostgresCitaRepository ▷ CitaRepositoryPort` | Patrón **Repository** y Principio de **Inversión de Dependencias (DIP)**. |
+| `RedisDistributedLockAdapter ▷ DistributedLockPort` | Patrón **Distributed Lock (Mutex)** para prevenir condiciones de carrera. |
+| `RabbitMQEventPublisher ▷ EventPublisherPort` | Patrón **Publish/Subscribe** para desacoplamiento asíncrono. |
+| `ReservarCitaUseCase` depende solo de interfaces | Principio de **Inversión de Dependencias (DIP)** y **Clean Architecture**. |

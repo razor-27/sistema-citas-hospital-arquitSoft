@@ -1,0 +1,337 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="gKK7tPX2dCRxqiHRAEHa" name="Page-1">
+    <mxGraphModel dx="1178" dy="736" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontStyle=1;spacingLeft=8;" value="«monolito» Sistema de Citas Hospital de Huamanga  [NestJS 10 LTS - TypeScript]&#xa;Una sola aplicación · un solo proceso · un solo despliegue" vertex="1">
+          <mxGeometry height="40" width="700" x="55" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" parent="1" style="shape=mxgraph.archimate3.actor;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;" value="Paciente /&#xa;Familiar" vertex="1">
+          <mxGeometry height="60" width="50" x="690" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" parent="1" style="shape=mxgraph.archimate3.actor;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;" value="Médico /&#xa;Especialista" vertex="1">
+          <mxGeometry height="60" width="50" x="400" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" parent="1" style="shape=mxgraph.archimate3.actor;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;" value="Personal de&#xa;Admisión" vertex="1">
+          <mxGeometry height="60" width="50" x="530" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p4" parent="1" style="shape=mxgraph.archimate3.actor;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;" value="Jefatura TI /&#xa;Admin" vertex="1">
+          <mxGeometry height="60" width="50" x="790" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="clienteweb" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;align=center;verticalAlign=middle;" value="&lt;b&gt;Portal Web de Citas&lt;/b&gt;&#xa;[Navegador – HTML / CSS / TypeScript – Angular]" vertex="1">
+          <mxGeometry height="40" width="360" x="445" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="clienteweb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="p2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="clienteweb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="p3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="clienteweb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="p4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="clienteweb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="https-label" parent="1" style="text;html=1;align=center;fontSize=9;" value="HTTPS – JSON  /api/v1/" vertex="1">
+          <mxGeometry height="20" width="250" x="505" y="301" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="clienteweb" style="edgeStyle=orthogonalEdgeStyle;entryX=0.413;entryY=0.019;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=block;endFill=1;" target="middleware-bar">
+          <mxGeometry relative="1" x="-0.405" as="geometry" />
+        </mxCell>
+        <mxCell id="monolito-border" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=2;dashed=1;dashPattern=8 4;verticalAlign=top;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="630" width="1050" x="100" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="monolito-label" parent="1" style="text;html=1;align=left;fontSize=10;fontStyle=1;" value="«monolito» Sistema de Citas Hospital de Huamanga  [NestJS 10 LTS – TypeScript]" vertex="1">
+          <mxGeometry height="20" width="600" x="110" y="332" as="geometry" />
+        </mxCell>
+        <mxCell id="middleware-bar" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;" value="&lt;b&gt;Middlewares NestJS (transversales)&lt;/b&gt;  cors · class-validator · AuthGuard (JWT) · LoggingInterceptor · ExceptionFilter" vertex="1">
+          <mxGeometry height="35" width="860" x="270" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-pres-label" parent="1" style="text;html=1;align=left;verticalAlign=top;fontSize=9;spacingLeft=4;" value="&lt;b&gt;1. CAPA DE&#xa;PRESENTACIÓN&lt;/b&gt;&#xa;&#xa;Recibe peticiones HTTP,&#xa;autentica, valida la&#xa;entrada y responde JSON" vertex="1">
+          <mxGeometry height="110" width="150" x="110" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-pres-bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;opacity=30;" value="" vertex="1">
+          <mxGeometry height="115" width="860" x="270" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="pres-auth" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;align=center;" value="&lt;b&gt;módulo auth&lt;/b&gt;&lt;br&gt;src/modules/auth/&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="150" x="280" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="pres-pac" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;align=center;" value="&lt;b&gt;módulo pacientes&lt;/b&gt;&lt;br&gt;src/modules/pacientes/&lt;br&gt;&lt;br&gt;&amp;nbsp;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="155" x="440" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="pres-med" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;align=center;" value="&lt;b&gt;módulo médicos&lt;/b&gt;&lt;br&gt;src/modules/medicos/&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="150" x="605" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="pres-agenda" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;align=center;" value="&lt;b&gt;módulo agenda&lt;/b&gt;&lt;br&gt;src/modules/agenda/&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="150" x="765" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="pres-citas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;align=center;" value="&lt;b&gt;módulo citas (Core)&lt;/b&gt;&lt;br&gt;src/modules/citas/&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="155" x="925" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-neg-label" parent="1" style="text;html=1;align=left;verticalAlign=top;fontSize=9;spacingLeft=4;" value="&lt;b&gt;2. CAPA DE LÓGICA&#xa;DE NEGOCIO&lt;/b&gt;&#xa;&#xa;Reglas de negocio y&#xa;coordinación entre&#xa;módulos" vertex="1">
+          <mxGeometry height="120" width="150" x="110" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-neg-bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;opacity=30;" value="" vertex="1">
+          <mxGeometry height="120" width="860" x="270" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="neg-auth" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;" value="&lt;b&gt;auth.service.ts&lt;/b&gt;&#xa;login, tokens,&#xa;roles JWT" vertex="1">
+          <mxGeometry height="80" width="150" x="280" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="neg-pac" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;" value="&lt;b&gt;pacientes.service.ts&lt;/b&gt;&#xa;registro, búsqueda,&#xa;historial" vertex="1">
+          <mxGeometry height="80" width="155" x="440" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="neg-med" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;" value="&lt;b&gt;medicos.service.ts&lt;/b&gt;&#xa;disponibilidad,&#xa;especialidades" vertex="1">
+          <mxGeometry height="80" width="150" x="605" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="neg-agenda" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;" value="&lt;b&gt;agenda.service.ts&lt;/b&gt;&#xa;turnos, slots,&#xa;bloqueos Redis" vertex="1">
+          <mxGeometry height="80" width="150" x="765" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="neg-citas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;" value="&lt;b&gt;citas.service.ts&lt;/b&gt;&#xa;reservar, cancelar,&#xa;confirmar, exclusión&#xa;mutua" vertex="1">
+          <mxGeometry height="80" width="155" x="925" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="eg1" edge="1" parent="1" source="neg-auth" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#82b366;dashed=1;endArrow=open;endFill=0;" target="neg-pac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eg2" edge="1" parent="1" source="neg-agenda" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#82b366;dashed=1;endArrow=open;endFill=0;" target="neg-citas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-dat-label" parent="1" style="text;html=1;align=left;verticalAlign=top;fontSize=9;spacingLeft=4;" value="&lt;b&gt;3. CAPA DE DATOS&lt;/b&gt;&#xa;&#xa;Persistencia y consultas&#xa;a la base de datos" vertex="1">
+          <mxGeometry height="100" width="150" x="110" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-dat-bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;opacity=40;" value="" vertex="1">
+          <mxGeometry height="100" width="860" x="270" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-1" edge="1" parent="1" source="dat-auth" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=6;endArrow=block;endFill=1;" target="acceso-compartido">
+          <mxGeometry relative="1" x="-0.0521" as="geometry">
+            <Array as="points">
+              <mxPoint x="355" y="750" />
+              <mxPoint x="700" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dat-auth" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="auth.repository.ts" vertex="1">
+          <mxGeometry height="50" width="150" x="280" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-2" edge="1" parent="1" source="dat-pac" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="acceso-compartido">
+          <mxGeometry relative="1" x="0.0876" as="geometry">
+            <Array as="points">
+              <mxPoint x="517.5" y="750" />
+              <mxPoint x="700" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dat-pac" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="pacientes.repository.ts" vertex="1">
+          <mxGeometry height="50" width="155" x="440" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-3" edge="1" parent="1" source="dat-med" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="acceso-compartido">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="750" />
+              <mxPoint x="700" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dat-med" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="medicos.repository.ts" vertex="1">
+          <mxGeometry height="50" width="150" x="605" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-4" edge="1" parent="1" source="dat-agenda" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="acceso-compartido">
+          <mxGeometry relative="1" x="0.1111" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="750" />
+              <mxPoint x="700" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dat-agenda" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="agenda.repository.ts" vertex="1">
+          <mxGeometry height="50" width="150" x="765" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-5" edge="1" parent="1" source="dat-citas" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="acceso-compartido">
+          <mxGeometry relative="1" x="-0.0599" as="geometry">
+            <Array as="points">
+              <mxPoint x="1002.5" y="750" />
+              <mxPoint x="700" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dat-citas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="citas.repository.ts" vertex="1">
+          <mxGeometry height="50" width="155" x="925" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="acceso-compartido" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=center;" value="&lt;b&gt;Acceso a datos compartido&lt;/b&gt;  TypeORM (ORM) · entidades · pool de conexiones  (src/shared/database/)" vertex="1">
+          <mxGeometry height="35" width="860" x="270" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-trans-label" parent="1" style="text;html=1;align=left;verticalAlign=top;fontSize=9;spacingLeft=4;" value="&lt;b&gt;4. MÓDULOS&#xa;TRANSVERSALES&lt;/b&gt;&#xa;&#xa;Funcionalidades&#xa;compartidas entre&#xa;módulos" vertex="1">
+          <mxGeometry height="110" width="150" x="110" y="808" as="geometry" />
+        </mxCell>
+        <mxCell id="capa-trans-bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;opacity=30;" value="" vertex="1">
+          <mxGeometry height="110" width="860" x="270" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="trans-notif" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;align=center;" value="&lt;b&gt;notificaciones.service.ts&lt;/b&gt;&#xa;WhatsApp, SMS, correo" vertex="1">
+          <mxGeometry height="70" width="190" x="280" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="trans-audit" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;align=center;" value="&lt;b&gt;auditoria.service.ts&lt;/b&gt;&#xa;logs de auditoría,&#xa;trazabilidad" vertex="1">
+          <mxGeometry height="70" width="190" x="480" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="trans-redis" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;align=center;" value="&lt;b&gt;cache.service.ts&lt;/b&gt;&#xa;Redis – slots en caché,&#xa;locks distribuidos" vertex="1">
+          <mxGeometry height="70" width="190" x="680" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="trans-rabbit" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;align=center;" value="&lt;b&gt;eventos.service.ts&lt;/b&gt;&#xa;RabbitMQ – eventos&#xa;asíncronos de citas" vertex="1">
+          <mxGeometry height="70" width="190" x="880" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="ea1" edge="1" parent="1" source="pres-auth" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="neg-auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ea2" edge="1" parent="1" source="neg-auth" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="dat-auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb1" edge="1" parent="1" source="pres-pac" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="neg-pac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb2" edge="1" parent="1" source="neg-pac" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="dat-pac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ec1" edge="1" parent="1" source="pres-med" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="neg-med">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2" edge="1" parent="1" source="neg-med" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="dat-med">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed1" edge="1" parent="1" source="pres-agenda" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="neg-agenda">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed2" edge="1" parent="1" source="neg-agenda" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="dat-agenda">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ee1" edge="1" parent="1" source="pres-citas" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="neg-citas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ee2" edge="1" parent="1" source="neg-citas" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="dat-citas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sql-arrow" parent="1" style="text;html=1;align=center;fontSize=9;" value="SQL – TCP 5432" vertex="1">
+          <mxGeometry height="20" width="130" x="440" y="930" as="geometry" />
+        </mxCell>
+        <mxCell id="sql-edge" edge="1" parent="1" source="acceso-compartido" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;" target="postgresql">
+          <mxGeometry relative="1" x="-0.0514" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="930" />
+              <mxPoint x="680" y="930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="postgresql" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;align=center;" value="&lt;b&gt;PostgreSQL&lt;/b&gt;&#xa;hospital_citas_db" vertex="1">
+          <mxGeometry height="80" width="120" x="620" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-redis" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#000000;fontSize=9;align=center;" value="«sistema externo»&#xa;&lt;b&gt;Redis&lt;/b&gt;&#xa;Caché · Locks dist." vertex="1">
+          <mxGeometry height="70" width="140" x="1230" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-rabbit" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#000000;fontSize=9;align=center;" value="«sistema externo»&#xa;&lt;b&gt;RabbitMQ&lt;/b&gt;&#xa;Cola de mensajes" vertex="1">
+          <mxGeometry height="70" width="140" x="1230" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-whatsapp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#000000;fontSize=9;align=center;" value="«sistema externo»&#xa;&lt;b&gt;WhatsApp / SMS&lt;/b&gt;&#xa;Notificaciones" vertex="1">
+          <mxGeometry height="70" width="140" x="1230" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-reniec" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#000000;fontSize=9;align=center;" value="«sistema externo»&#xa;&lt;b&gt;RENIEC / SIS&lt;/b&gt;&#xa;Validación identidad" vertex="1">
+          <mxGeometry height="70" width="140" x="1230" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-e1" edge="1" parent="1" source="trans-redis" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;endFill=1;fontSize=8;" target="ext-redis" value="HTTPS / REST">
+          <mxGeometry relative="1" x="0.2298" as="geometry">
+            <Array as="points">
+              <mxPoint x="775" y="940" />
+              <mxPoint x="1170" y="940" />
+              <mxPoint x="1170" y="505" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ext-e2" edge="1" parent="1" source="trans-rabbit" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;endFill=1;fontSize=8;" target="ext-rabbit" value="AMQP">
+          <mxGeometry relative="1" x="-0.2424" as="geometry">
+            <Array as="points">
+              <mxPoint x="975" y="950" />
+              <mxPoint x="1390" y="950" />
+              <mxPoint x="1390" y="605" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ext-e3" edge="1" parent="1" source="trans-notif" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;endFill=1;fontSize=8;" target="ext-whatsapp" value="HTTPS / REST">
+          <mxGeometry relative="1" x="0.0394" as="geometry">
+            <Array as="points">
+              <mxPoint x="375" y="920" />
+              <mxPoint x="1200" y="920" />
+              <mxPoint x="1200" y="705" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ext-e4" edge="1" parent="1" source="neg-pac" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;endFill=1;fontSize=8;" target="ext-reniec" value="HTTPS / REST">
+          <mxGeometry relative="1" x="0.0402" as="geometry">
+            <Array as="points">
+              <mxPoint x="517.5" y="650" />
+              <mxPoint x="1180" y="650" />
+              <mxPoint x="1180" y="805" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leyenda-box" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=9;" value="" vertex="1">
+          <mxGeometry height="55" width="400" x="100" y="1061" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda-title" parent="1" style="text;html=1;align=left;fontSize=9;fontStyle=1;" value="&lt;b&gt;Leyenda&lt;/b&gt;" vertex="1">
+          <mxGeometry height="16" width="100" x="110" y="1054" as="geometry" />
+        </mxCell>
+        <mxCell id="ley1" parent="1" style="text;html=1;align=left;fontSize=9;" value="────▶  Llamada síncrona entre capas (de arriba hacia abajo)" vertex="1">
+          <mxGeometry height="16" width="380" x="110" y="1072" as="geometry" />
+        </mxCell>
+        <mxCell id="ley2" parent="1" style="text;html=1;align=left;fontSize=9;strokeColor=#82b366;fontColor=#82b366;" value="- - - ▶  Uso entre módulos (solo a través de su service)" vertex="1">
+          <mxGeometry height="16" width="380" x="110" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="reglas-box" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=9;align=left;spacingLeft=8;" value="&lt;b&gt;Reglas de la arquitectura&lt;/b&gt;&#xa;1. Cada capa solo invoca a la capa inmediatamente inferior.&#xa;2. Un módulo no accede al repository ni a las tablas de otro módulo.&#xa;3. La comunicación entre módulos se hace llamando a su service.&#xa;4. Todo se ejecuta en un único proceso NestJS con una única BD." vertex="1">
+          <mxGeometry height="70" width="530" x="605" y="1061" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-9" edge="1" parent="1" source="_4ivuUqa7hTAqFE-7iuI-7" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="_4ivuUqa7hTAqFE-7iuI-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;auth.routes.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="295" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;auth.controller.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="295" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;pacientes.routes.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="457.5" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-11" edge="1" parent="1" source="_4ivuUqa7hTAqFE-7iuI-10" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="_4ivuUqa7hTAqFE-7iuI-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;pacientes.controller.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="457.5" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;medicos.routes.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="620" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-14" edge="1" parent="1" source="_4ivuUqa7hTAqFE-7iuI-13" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="_4ivuUqa7hTAqFE-7iuI-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;medicos.controller.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="620" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;agenda.routes.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="780" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-17" edge="1" parent="1" source="_4ivuUqa7hTAqFE-7iuI-16" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="_4ivuUqa7hTAqFE-7iuI-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;agenda.controller.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="780" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;citas.routes.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="942.5" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-20" edge="1" parent="1" source="_4ivuUqa7hTAqFE-7iuI-19" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;defaultLabelBackgroundColor=page;startSize=8;endArrow=block;endFill=1;endSize=6;" target="_4ivuUqa7hTAqFE-7iuI-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_4ivuUqa7hTAqFE-7iuI-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;span style=&quot;font-size: 9px;&quot;&gt;citas.controller.ts&lt;/span&gt;" vertex="1">
+          <mxGeometry height="20" width="120" x="942.5" y="470" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

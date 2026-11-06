@@ -1,0 +1,187 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="hjq6jXUnQs5kyfSGzj10" name="Page-1">
+    <mxGraphModel dx="680" dy="425" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="outer" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=2;dashed=1;dashPattern=8 4;verticalAlign=top;fontSize=11;fontStyle=1;align=left;spacingLeft=8;" value="«aplicación» Sistema de Citas Hospital de Huamanga  [NestJS 10 LTS – TypeScript]  src/" vertex="1">
+          <mxGeometry height="850" width="1545" x="185" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="adapters-banner" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=11;align=center;fontStyle=1;" value="&lt;b&gt;ADAPTADORES Y FRAMEWORKS&lt;/b&gt; – dependen de NestJS, TypeORM, Redis, RabbitMQ" vertex="1">
+          <mxGeometry height="24" width="1510" x="200" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="app-region" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="140" width="800" x="540" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="app-label" parent="1" style="text;html=1;align=center;fontSize=10;fontStyle=1;" value="&lt;b&gt;APLICACIÓN&lt;/b&gt; – casos de uso · src/application/" vertex="1">
+          <mxGeometry height="20" width="800" x="540" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="87a95dVL2r5hFjpOyhDT-5" edge="1" parent="1" source="cu1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=-0.002;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=6;endArrow=block;endFill=1;entryPerimeter=0;" target="dom-region">
+          <mxGeometry relative="1" x="-0.0015" as="geometry" />
+        </mxCell>
+        <mxCell id="cu1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=10;align=center;" value="«caso de uso»&#xa;&lt;b&gt;ReservarCitaCasoUso&lt;/b&gt;&#xa;(ejecuta)" vertex="1">
+          <mxGeometry height="90" width="175" x="560" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="87a95dVL2r5hFjpOyhDT-6" edge="1" parent="1" source="cu2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=-0.001;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=6;endArrow=block;endFill=1;entryPerimeter=0;" target="dom-region">
+          <mxGeometry relative="1" x="-0.0004" as="geometry" />
+        </mxCell>
+        <mxCell id="cu2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=10;align=center;" value="«caso de uso»&#xa;&lt;b&gt;CancelarCitaCasoUso&lt;/b&gt;&#xa;(ejecuta)" vertex="1">
+          <mxGeometry height="90" width="175" x="750" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="87a95dVL2r5hFjpOyhDT-7" edge="1" parent="1" source="cu3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=6;endArrow=block;endFill=1;" target="dom-region">
+          <mxGeometry relative="1" x="0.0039" as="geometry" />
+        </mxCell>
+        <mxCell id="cu3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=10;align=center;" value="«caso de uso»&#xa;&lt;b&gt;ConsultarAgendaCasoUso&lt;/b&gt;&#xa;(ejecuta)" vertex="1">
+          <mxGeometry height="90" width="175" x="940" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="87a95dVL2r5hFjpOyhDT-4" edge="1" parent="1" source="cu4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=-0.002;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=6;endArrow=block;endFill=1;entryPerimeter=0;" target="dom-region">
+          <mxGeometry relative="1" x="0.0028" as="geometry" />
+        </mxCell>
+        <mxCell id="cu4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=10;align=center;" value="«caso de uso»&#xa;&lt;b&gt;NotificarPacienteCasoUso&lt;/b&gt;&#xa;(ejecuta)" vertex="1">
+          <mxGeometry height="90" width="180" x="1130" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="pres-region" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontStyle=1;verticalAlign=top;" value="&lt;b&gt;PRESENTACIÓN&lt;/b&gt;&#xa;src/presentation" vertex="1">
+          <mxGeometry height="600" width="320" x="200" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="pres1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;fontSize=9;align=center;" value="«controlador NestJS»&#xa;&lt;b&gt;CitasController&lt;/b&gt;&#xa;POST /citas · DELETE /citas/:id" vertex="1">
+          <mxGeometry height="75" width="285" x="215" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pres2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;fontSize=9;align=center;" value="«controlador NestJS»&#xa;&lt;b&gt;AgendaController&lt;/b&gt;&#xa;GET /agenda · GET /slots" vertex="1">
+          <mxGeometry height="75" width="285" x="215" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="pres3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;fontSize=9;align=center;" value="«guard NestJS»&#xa;&lt;b&gt;JwtAuthGuard&lt;/b&gt;&#xa;verifica token JWT en cada request" vertex="1">
+          <mxGeometry height="75" width="285" x="215" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="pres4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;fontSize=9;align=center;" value="«pipe»&#xa;&lt;b&gt;ValidationPipe&lt;/b&gt;&#xa;class-validator · class-transformer" vertex="1">
+          <mxGeometry height="75" width="285" x="215" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="pres5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;fontSize=9;align=center;" value="«interceptor»&#xa;&lt;b&gt;LoggingInterceptor&lt;/b&gt;&#xa;auditoría de peticiones HTTP" vertex="1">
+          <mxGeometry height="75" width="285" x="215" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-region" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="440" width="800" x="540" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-label" parent="1" style="text;html=1;align=left;fontSize=10;fontStyle=1;spacingLeft=8;" value="&lt;b&gt;DOMINIO&lt;/b&gt; – núcleo · src/domain/" vertex="1">
+          <mxGeometry height="20" width="400" x="540" y="232" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-modelos-label" parent="1" style="text;html=1;align=center;fontSize=9;fontStyle=1;" value="&lt;b&gt;Modelos&lt;/b&gt; (entidades y reglas)" vertex="1">
+          <mxGeometry height="18" width="370" x="550" y="254" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-contratos-label" parent="1" style="text;html=1;align=center;fontSize=9;fontStyle=1;" value="&lt;b&gt;Contratos&lt;/b&gt; (puertos)" vertex="1">
+          <mxGeometry height="18" width="380" x="940" y="254" as="geometry" />
+        </mxCell>
+        <mxCell id="ent-cita" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«entidad»&#xa;&lt;b&gt;Cita&lt;/b&gt;&#xa;id, fecha, estado, motivoCita" vertex="1">
+          <mxGeometry height="80" width="175" x="555" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="ent-slot" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«entidad»&#xa;&lt;b&gt;TurnoSlot&lt;/b&gt;&#xa;horaInicio, horaFin, disponible" vertex="1">
+          <mxGeometry height="80" width="175" x="555" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="ent-pac" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«entidad»&#xa;&lt;b&gt;Paciente&lt;/b&gt;&#xa;dni, nombre, seguro" vertex="1">
+          <mxGeometry height="80" width="175" x="555" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="ent-reglas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«reglas»&#xa;&lt;b&gt;reglas-negocio.ts&lt;/b&gt;&#xa;máx 1 cita/día · anticipación&#xa;mínima 30 min" vertex="1">
+          <mxGeometry height="70" width="175" x="555" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="port-cita" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«interfaz»&#xa;&lt;b&gt;ICitaRepository&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="175" x="950" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="port-agenda" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«interfaz»&#xa;&lt;b&gt;IAgendaRepository&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="175" x="950" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="port-notif" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«interfaz»&#xa;&lt;b&gt;INotificadorPaciente&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="175" x="950" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="port-cache" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d6b656;fontSize=9;align=center;" value="«interfaz»&#xa;&lt;b&gt;ICacheService&lt;/b&gt;" vertex="1">
+          <mxGeometry height="70" width="175" x="950" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="ts-note" parent="1" style="text;html=1;align=center;fontSize=9;fontStyle=2;" value="TypeScript puro: sin importar NestJS, TypeORM ni Redis.&#xa;Se verifica con pruebas unitarias aisladas (jest)." vertex="1">
+          <mxGeometry height="30" width="380" x="735" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="infra-region" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=10;fontStyle=1;verticalAlign=top;" value="&lt;b&gt;INFRAESTRUCTURA&lt;/b&gt;&#xa;src/infrastructure/" vertex="1">
+          <mxGeometry height="600" width="340" x="1360" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="infra1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673a6;fontSize=9;align=center;" value="«adaptador»&#xa;&lt;b&gt;TypeOrmCitaRepository&lt;/b&gt;&#xa;TypeOrmAgendaRepository" vertex="1">
+          <mxGeometry height="75" width="310" x="1375" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="infra2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673a6;fontSize=9;align=center;" value="«adaptador»&#xa;&lt;b&gt;RedisCacheService&lt;/b&gt;&#xa;caché de slots y locks distribuidos" vertex="1">
+          <mxGeometry height="75" width="310" x="1375" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="infra3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673a6;fontSize=9;align=center;" value="«adaptador»&#xa;&lt;b&gt;WhatsAppNotificador&lt;/b&gt;&#xa;NotificadorSMS" vertex="1">
+          <mxGeometry height="75" width="310" x="1375" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="87a95dVL2r5hFjpOyhDT-3" edge="1" parent="1" source="infra4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=8;strokeColor=#9673A6;endArrow=open;endFill=0;dashed=1;" target="port-agenda">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="infra4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673a6;fontSize=9;align=center;" value="«adaptador»&#xa;&lt;b&gt;RabbitMQEventBus&lt;/b&gt;&#xa;publicación de eventos de citas" vertex="1">
+          <mxGeometry height="75" width="310" x="1375" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="infra5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673a6;fontSize=9;align=center;" value="«NestJS DI»&#xa;&lt;b&gt;AppModule&lt;/b&gt;&#xa;inyecta adaptadores en casos de uso" vertex="1">
+          <mxGeometry height="75" width="310" x="1375" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="reg-arrow" edge="1" parent="1" source="app-config" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;endFill=0;dashed=1;fontSize=8;exitX=0.903;exitY=-0.004;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="infra5" value="">
+          <mxGeometry relative="1" x="-0.1663" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1530" y="689.8" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ext-api" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#000000;fontSize=9;align=center;" value="«sistema externo»&#xa;&lt;b&gt;RENIEC / SIS API&lt;/b&gt;&#xa;Validación identidad paciente&#xa;&#xa;«operaciones»&#xa;validar DNI&#xa;consultar seguro&#xa;verificar cobertura" vertex="1">
+          <mxGeometry height="160" width="150" x="1760" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="app-config" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=9;align=center;" value="«raíz de composición»&#xa;&lt;b&gt;AppModule / main.ts&lt;/b&gt;&#xa;único archivo que elige qué adaptador cumple cada contrato (provideClass – NestJS IoC) e inyecta los casos de uso" vertex="1">
+          <mxGeometry height="50" width="1480" x="200" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-user" parent="1" style="shape=mxgraph.archimate3.actor;fillColor=#FFFFFF;strokeColor=#000000;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;" value="Usuario&#xa;(Paciente)" vertex="1">
+          <mxGeometry height="60" width="50" x="50" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-label" parent="1" style="text;html=1;align=center;fontSize=9;" value="navegador /&#xa;app móvil" vertex="1">
+          <mxGeometry height="20" width="70" x="115" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="invoca-arrow" edge="1" parent="1" source="pres-region" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;fontSize=8;rounded=0;curved=0;exitX=1;exitY=0.131;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.308;entryDx=0;entryDy=0;entryPerimeter=0;" target="app-region" value="invoca">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dip1" edge="1" parent="1" source="infra1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#9673a6;dashed=1;endArrow=open;endFill=0;fontSize=8;" target="port-cita">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1530" y="200" />
+              <mxPoint x="1190" y="200" />
+              <mxPoint x="1190" y="315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dip2" edge="1" parent="1" source="infra2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#9673a6;dashed=1;endArrow=open;endFill=0;fontSize=8;" target="port-cache">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1200" y="247.5" />
+              <mxPoint x="1200" y="585" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dip3" edge="1" parent="1" source="infra3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#9673a6;dashed=1;endArrow=open;endFill=0;fontSize=8;" target="port-notif">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1220" y="337.5" />
+              <mxPoint x="1220" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ext-arrow" edge="1" parent="1" source="infra1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;fontSize=8;" target="ext-api" value="HTTP/JSON">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=9;align=left;spacingLeft=8;" value="&lt;b&gt;Leyenda&lt;/b&gt;&lt;br&gt;────▶  Llamada en tiempo de ejecución&lt;br&gt;- - - -&amp;nbsp; ▶ Dependencia de código (imports): siempre apunta hacia el centro&lt;br&gt;&lt;span style=&quot;color: rgb(150, 115, 166);&quot;&gt;- - - -&amp;nbsp; ▶&lt;/span&gt; Implementa el contrato definido en el dominio (inversión de dependencia)&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="560" x="200" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="reglas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontSize=9;align=left;spacingLeft=8;" value="&lt;b&gt;Reglas de dependencia&lt;/b&gt;&#xa;1. El dominio no importa nada de las capas externas.&#xa;2. Los casos de uso solo conocen entidades y contratos.&#xa;3. Los adaptadores implementan contratos, son intercambiables.&#xa;4. Cambiar de tecnología = cambiar adaptador, no el dominio." vertex="1">
+          <mxGeometry height="100" width="560" x="880" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="87a95dVL2r5hFjpOyhDT-1" edge="1" parent="1" style="edgeStyle=none;curved=1;rounded=0;curveGeometry=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=8;entryX=-0.001;entryY=0.518;entryDx=0;entryDy=0;entryPerimeter=0;" target="pres-region">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="380" as="sourcePoint" />
+            <mxPoint x="120" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
