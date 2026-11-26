@@ -3,8 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 import { Pool } from 'pg';
 import { AgendaModule } from './modulos/agenda';
+import { AuthModule } from './modulos/auth';
+import { AuditoriaModule } from './modulos/auditoria';
 import { CitasModule } from './modulos/citas';
 import { MedicosModule } from './modulos/medicos';
+import { NotificacionesModule } from './modulos/notificaciones';
+import { PacientesModule } from './modulos/pacientes';
 import { validateEnv } from './shared/config/env.validation';
 import {
   HEALTH_DB_CHECK,
@@ -20,9 +24,13 @@ import { PG_POOL, REDIS_CLIENT, SharedModule } from './shared/shared.module';
       validate: validateEnv,
     }),
     SharedModule,
+    AuthModule,
     MedicosModule,
     AgendaModule,
     CitasModule,
+    PacientesModule,
+    AuditoriaModule,
+    NotificacionesModule,
   ],
   controllers: [HealthController],
   providers: [

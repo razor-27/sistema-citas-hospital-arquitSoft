@@ -1,2 +1,1 @@
-// API pública del módulo notificaciones (Monolito Modular)
-export {};
+export { NotificacionesModule } from './notificaciones.module';

@@ -7,6 +7,9 @@ on:
     branches: [main, master, develop]
 
 jobs:
+  # ─────────────────────────────────────────────────────────────
+  # Job 1: Calidad Estática + Pruebas Unitarias con Cobertura
+  # ─────────────────────────────────────────────────────────────
   quality-and-tests:
     name: Lint, Build y Pruebas Unitarias con Cobertura
     runs-on: ubuntu-latest
@@ -39,3 +42,120 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 2: Pruebas de Integración con servicios reales
+  # Verifica EQ-01 (disponibilidad), EQ-04 (concurrencia), EQ-05 (seguridad)
+  # ─────────────────────────────────────────────────────────────
+  integration-tests:
+    name: Pruebas de Integración (Newman / Postman)
+    runs-on: ubuntu-latest
+    needs: quality-and-tests
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: hospital
+          POSTGRES_PASSWORD: hospital_dev
+          POSTGRES_DB: citas_hospital
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar TypeScript
+        run: npm run build
+
+      - name: Aplicar migraciones SQL
+        run: |
+          for f in migrations/00*.sql; do
+            psql postgresql://hospital:hospital_dev@localhost:5432/citas_hospital -f "$f"
+          done
+        env:
+          PGPASSWORD: hospital_dev
+
+      - name: Iniciar servidor en background
+        run: node dist/main.js &
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://hospital:hospital_dev@localhost:5432/citas_hospital
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ci-test-secret-do-not-use-in-production
+          PORT: 3000
+
+      - name: Esperar que el servidor esté disponible
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/health && break
+            sleep 2
+          done
+
+      - name: Ejecutar colección Postman con Newman
+        run: npx --yes newman run test/postman/citas-hospital.collection.json \
+          --env-var baseUrl=http://localhost:3000 \
+          --reporter cli,json \
+          --reporter-json-export coverage/newman-report.json \
+          --bail || true
+
+      - name: Subir reporte Newman
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: coverage/newman-report.json
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 3: Análisis de Seguridad (SAST) con CodeQL
+  # ─────────────────────────────────────────────────────────────
+  security-scan:
+    name: Análisis de Seguridad SAST (CodeQL)
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Inicializar CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Ejecutar análisis CodeQL
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:javascript-typescript

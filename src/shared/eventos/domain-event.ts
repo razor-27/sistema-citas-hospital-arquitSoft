@@ -31,4 +31,21 @@ export class InMemoryEventBus implements EventBusPort {
     const registrados = this.handlers.get(event.nombre) ?? [];
     await Promise.all(registrados.map((handler) => handler(event)));
   }
+
+  /** Alias compatible con consumidores existentes y pruebas de integración. */
+  async publish<TPayload>(event: {
+    tipo?: string;
+    nombre?: string;
+    payload: TPayload;
+    ocurridoEn: Date | string;
+  }): Promise<void> {
+    const nombre = event.nombre ?? event.tipo;
+    if (!nombre) throw new Error('El evento debe incluir nombre o tipo');
+
+    await this.publicar<TPayload>({
+      nombre,
+      payload: event.payload,
+      ocurridoEn: event.ocurridoEn instanceof Date ? event.ocurridoEn : new Date(event.ocurridoEn),
+    });
+  }
 }

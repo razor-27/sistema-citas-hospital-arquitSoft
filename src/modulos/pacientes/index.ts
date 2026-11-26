@@ -1,2 +1,1 @@
-// API pública del módulo pacientes (Monolito Modular)
-export {};
+export { PacientesModule } from './pacientes.module';

@@ -1,56 +1,107 @@
-# Plan Técnico: Seguridad, Integraciones Resilientes, Auditoría y Pruebas de Calidad
+# Plan Técnico: Spec 004 — Integraciones, Seguridad, Auditoría y Pruebas de Calidad
 
-**Rama:** `004-integraciones-seguridad-y-calidad` | **Fecha:** 2026-11-25 | **Spec:** [spec.md](spec.md)
-
----
-
-## Resumen
-
-Completar el Monolito Modular implementando `auth` (JWT + RBAC), `pacientes` (padrón + adaptadores RENIEC/SIS con Circuit Breaker *Opossum*), `notificaciones` (productor/consumidor RabbitMQ con DLQ y adaptadores WhatsApp/SMS), `auditoria` (tabla *append-only* + reportes sobre réplica/lectura), y construir la suite automatizada de verificación de calidad con **Postman/Newman** y **k6** integrada al CI/CD.
+**Rama:** `004-integraciones-seguridad-y-calidad` | **Fecha:** 2026-11-26 | **Spec:** [spec.md](spec.md)
 
 ---
 
-## Contexto Técnico
+## Constitution Check
 
-- **Seguridad:** `@nestjs/jwt`, `passport-jwt`, `argon2` / `bcrypt`, Guards RBAC y Ownership (anti-IDOR)
-- **Resiliencia Externa:** `opossum` (Circuit Breaker: `timeout: 3000 ms`, `errorThresholdPercentage: 50`, `resetTimeout: 30000 ms`)
-- **Mensajería:** RabbitMQ (`amqplib`) con exchange `citas.events`, cola `notificaciones.queue` y `notificaciones.dlq`
-- **Pruebas de Calidad:** Postman Collection + Newman CLI (`test/postman/`), scripts k6 (`test/k6/`)
-
----
-
-## Verificación de Constitución (*Constitution Check*)
-
-| Principio | Cumplimiento | Evidencia en el Plan |
-| :--- | :---: | :--- |
-| **I. Monolito Modular** | ✅ | `auditoria` y `notificaciones` se suscriben a eventos sin acoplar `citas`. |
-| **II. Clean Architecture** | ✅ | `AseguramientoPort` y `NotificacionPort` en `dominio/`; Opossum y RabbitMQ en `infraestructura/`. |
-| **III. SOLID (OCP, DIP)** | ✅ | Nuevos canales de notificación se agregan implementando `NotificacionPort` (OCP). |
-| **VI. Seguridad y Ley 29733** | ✅ | JWT + RBAC + hash Argon2 + auditoría inmutable sin `UPDATE/DELETE`. |
-| **VIII. Pruebas Calidad** | ✅ | Suites Postman/Newman y k6 cubriendo EQ-01 a EQ-06. |
+| Principio | Verificación | Estado |
+|-----------|-------------|--------|
+| **I – Monolito Modular** | Auth, Auditoria, Pacientes, Notificaciones como módulos independientes con límites explícitos | ✅ |
+| **II – Clean Architecture** | Dominio sin dependencias externas; puertos IdentidadPort/AseguramientoPort en dominio; adapters en infraestructura | ✅ |
+| **III – SOLID** | SRP: cada clase una responsabilidad; OCP: nuevos canales sin modificar Consumer; DIP: puertos inyectados por tokens | ✅ |
+| **IV – Patrones** | Adapter (RENIEC/SIS), Strategy (NotificacionPort por canal), Circuit Breaker (opossum), Decorator (CachedDisponibilidad) | ✅ |
+| **V – Seguridad** | JWT + RBAC (RolesGuard) + Anti-IDOR (OwnershipGuard) + Auditoría append-only + Argon2 passwords | ✅ |
+| **VI – Observabilidad** | AuditoriaListener registra 7 tipos de eventos; Logger en adapters; reporte de ocupación | ✅ |
+| **VII – Resiliencia** | Circuit Breaker Opossum (timeout 3s, umbral 50%, reset 30s) + fallback inmediato + DLQ + backoff exponencial | ✅ |
+| **VIII – Testing** | Cobertura ≥ 80%; pruebas de guards, use cases, listener, circuit breaker; suites K6 (EQ-02/03/04) y Postman (EQ-05/06) | ✅ |
 
 ---
 
-## Contratos de API REST (`/api/v1/...`)
+## Blueprint de Implementación
 
-| Método | Ruta | Rol | Descripción |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/v1/auth/login` | Público | Autenticación y emisión de JWT |
-| `POST` | `/api/v1/auth/registro` | Público | Registro de paciente |
-| `POST` | `/api/v1/pacientes/validar-identidad` | `ADMISION`, `PACIENTE` | Consulta RENIEC + SIS con Circuit Breaker |
-| `GET` | `/api/v1/pacientes/dni/:dni` | `ADMISION` | Búsqueda rápida por DNI (`< 1 s`) |
-| `GET` | `/api/v1/auditoria/citas` | `ADMIN` | Historial inmutable por DNI, HC o código |
-| `GET` | `/api/v1/auditoria/reportes/ocupacion` | `ADMIN` | Reporte de ocupación, *no-show* y demanda |
+### Módulo Auth — JWT + RBAC
+
+```
+src/modulos/auth/
+├── dominio/
+│   ├── usuario.entity.ts        — Entidad con validación DNI; tieneRol()
+│   └── usuario-repository.port.ts
+├── aplicacion/
+│   ├── auth.dto.ts              — LoginDto, RegistroDto, TokenResponseDto
+│   ├── login.use-case.ts        — Verifica Argon2, emite JWT (1h)
+│   └── registro.use-case.ts    — DNI único, hashea password
+├── infraestructura/
+│   ├── jwt.strategy.ts          — PassportStrategy('jwt'), extrae {sub, dni, rol}
+│   ├── jwt-auth.guard.ts        — AuthGuard('jwt'), lanza 401
+│   ├── roles.guard.ts           — Lee @Roles(), lanza 403 (EQ-05 RBAC)
+│   ├── roles.decorator.ts       — @Roles(...Rol[])
+│   ├── ownership.guard.ts       — Anti-IDOR, lanza 403 (EQ-05)
+│   ├── argon2-hash.service.ts   — Import dinámico de argon2 (evita problemas nativo en tests)
+│   └── postgres-usuario.repository.ts
+└── presentacion/
+    └── auth.controller.ts       — POST /api/v1/auth/login + /registro
+```
+
+### Módulo Auditoría — Append-Only
+
+```
+src/modulos/auditoria/
+├── dominio/auditoria-repository.port.ts   — EventoAuditoria + puerto abstracto
+├── infraestructura/
+│   ├── auditoria.listener.ts    — Suscribe 7 eventos EventBus; fail-safe
+│   └── postgres-auditoria.repository.ts   — INSERT; SQL RULES bloquean UPDATE/DELETE
+└── presentacion/auditoria.controller.ts   — GET /auditoria/citas + /reportes/ocupacion
+```
+
+**Inmutabilidad garantizada a nivel de BD:** `CREATE RULE auditoria_no_update AS ON UPDATE TO auditoria_eventos DO INSTEAD NOTHING`.
+
+### Módulo Pacientes + Circuit Breaker
+
+```
+src/modulos/pacientes/
+├── dominio/integracion.ports.ts   — IdentidadPort (RENIEC), AseguramientoPort (SIS)
+├── aplicacion/validar-identidad.use-case.ts  — Promise.all(RENIEC, SIS)
+└── infraestructura/
+    ├── reniec.adapter.ts          — CB lazy-init, fallback validado=false
+    └── sis-resilient.adapter.ts   — CB lazy-init, fallback PENDIENTE_VALIDACION
+```
+
+**Config CB:** timeout 3000ms | errorThresholdPercentage 50% | resetTimeout 30000ms  
+**EQ-06 garantizado:** Fallback retorna inmediatamente cuando CB abre → latencia < 800ms.
+
+### Módulo Notificaciones — DLQ + Backoff
+
+```
+src/modulos/notificaciones/
+├── dominio/notificacion.port.ts   — NotificacionPort abstracto
+├── infraestructura/
+│   ├── notificacion-adapters.ts   — WhatsAppCloudAdapter + TwilioSmsAdapter
+│   └── notificaciones.consumer.ts — Backoff exp 2^(n-1)s × 5 intentos → DLQ
+```
+
+### Suites de Pruebas de Calidad
+
+| Archivo | Escenario | Herramienta |
+|---------|-----------|-------------|
+| `test/k6/eq02-rendimiento.js` | 2000 VUs, 2min, 10:1 lectura/escritura; p95<300/800ms | k6 |
+| `test/k6/eq03-spike-5000.js` | Rampa 500→5000 VUs; p95<1500ms | k6 |
+| `test/k6/eq04-concurrencia.js` | 50 VUs mismo slot → 1×201 + 49×409 | k6 |
+| `test/postman/citas-hospital.collection.json` | Auth 401/403, RBAC, CB, Flujo E2E | Newman |
+
+### CI/CD — 3 Jobs
+
+1. **quality-and-tests:** lint → build → test:cov (umbral 80%)
+2. **integration-tests:** PostgreSQL 16 + Redis 7 services → migraciones → Newman
+3. **security-scan:** CodeQL SAST `security-and-quality`
 
 ---
 
-## Matriz de Pruebas de Atributos de Calidad (Postman + k6)
+## ADRs Generados
 
-| Escenario | Herramienta | Archivo | Umbral de Aceptación |
-| :--- | :--- | :--- | :--- |
-| **EQ-01 Disponibilidad** | k6 + Docker | `test/k6/eq01-failover.js` | `GET /health` < 100 ms; 0% fallos tras caída de réplica |
-| **EQ-02 Rendimiento** | k6 | `test/k6/eq02-rendimiento.js` | Lectura `p95 < 300 ms`, Reserva `p95 < 800 ms` (10:1) |
-| **EQ-03 Escalabilidad** | k6 (Spike) | `test/k6/eq03-spike-5000.js` | 500 → 5,000 VUs, error `< 0.1%`, `p95 < 1.5 s` |
-| **EQ-04 Consistencia** | k6 | `test/k6/eq04-concurrencia.js` | 50 VUs mismo `slotId`: 1 `201` + 49 `409` (`< 200 ms`) |
-| **EQ-05 Seguridad** | Postman/Newman | `test/postman/citas-hospital.collection.json` | 100% bloqueo `401/403` en IDOR y RBAC |
-| **EQ-06 Tolerancia Fallos** | Postman + Mock | `test/postman/eq06-resiliencia.collection.json` | Reserva `< 800 ms` aun con SIS/WhatsApp en timeout 60 s |
+| ADR | Decisión |
+|-----|---------|
+| ADR-011 | Argon2id para hashing de contraseñas (import dinámico para tests) |
+| ADR-012 | Auditoría append-only con SQL RULES en PostgreSQL |
+| ADR-013 | Circuit Breaker lazy-init con opossum para adapters RENIEC/SIS |

@@ -1,0 +1,275 @@
+{
+  "info": {
+    "_postman_id": "citas-hospital-huamanga-v1",
+    "name": "Sistema de Citas - Hospital de Huamanga",
+    "description": "Suite de pruebas de calidad EQ-01 a EQ-06. Ejecutar con Newman:\nnpx newman run test/postman/citas-hospital.collection.json -e test/postman/environment.json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" },
+    { "key": "citaId", "value": "" },
+    { "key": "slotId", "value": "" },
+    { "key": "codigoReserva", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /auth/login (ADMISION)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Contiene accessToken', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.accessToken).to.be.a('string').and.not.empty;",
+                  "  pm.collectionVariables.set('token', body.accessToken);",
+                  "});",
+                  "pm.test('Rol correcto', () => pm.expect(pm.response.json().rol).to.equal('ADMISION'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"dni\": \"99999901\", \"password\": \"admision123\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "POST /auth/login (credenciales inválidas) → 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 401 Unauthorized', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"dni\": \"00000000\", \"password\": \"wrong\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EQ-05 Seguridad y RBAC",
+      "item": [
+        {
+          "name": "GET /citas sin token → 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 401 sin token', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/citas"
+          }
+        },
+        {
+          "name": "POST /agenda/ofertas con rol PACIENTE → 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 403 Forbidden (PACIENTE accede a endpoint ADMISION)', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{tokenPaciente}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"medicoId\": \"med-1\", \"fecha\": \"2026-12-01\", \"turno\": \"MANANA\", \"duracionSlotMin\": 20}"
+            },
+            "url": "{{baseUrl}}/api/v1/agenda/ofertas"
+          }
+        },
+        {
+          "name": "GET /auditoria/citas sin rol ADMIN → 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 403 Forbidden (PACIENTE no puede ver auditoría)', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenPaciente}}" }],
+            "url": "{{baseUrl}}/api/v1/auditoria/citas?dni=12345678"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EQ-06 Resiliencia Circuit Breaker",
+      "item": [
+        {
+          "name": "POST /pacientes/validar-identidad (SIS mock timeout) → fallback < 800ms",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 200 con fallback PENDIENTE_VALIDACION', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(['ACTIVO','PENDIENTE_VALIDACION']).to.include(body.estadoCobertura);",
+                  "});",
+                  "pm.test('Latencia < 800ms (Circuit Breaker activo)', () => pm.expect(pm.response.responseTime).to.be.below(800));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/v1/pacientes/validar-identidad/12345678"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Flujo E2E - Reserva Completa",
+      "item": [
+        {
+          "name": "1. GET /agenda/disponibilidad",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Responde en < 300ms', () => pm.expect(pm.response.responseTime).to.be.below(300));",
+                  "const slots = pm.response.json();",
+                  "if (slots && slots.length > 0) {",
+                  "  pm.collectionVariables.set('slotId', slots[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/agenda/disponibilidad?especialidad=MEDICINA_GENERAL&fecha=2026-12-01",
+              "query": [
+                { "key": "especialidad", "value": "MEDICINA_GENERAL" },
+                { "key": "fecha", "value": "2026-12-01" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. POST /citas (Reservar)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Responde en < 800ms', () => pm.expect(pm.response.responseTime).to.be.below(800));",
+                  "pm.test('Contiene codigoReserva CIT-XXXXXX', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.codigoReserva).to.match(/^CIT-[A-Z0-9]{6}$/);",
+                  "  pm.collectionVariables.set('citaId', body.id);",
+                  "  pm.collectionVariables.set('codigoReserva', body.codigoReserva);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"slotId\": \"{{slotId}}\", \"pacienteId\": \"{{pacienteId}}\", \"motivoConsulta\": \"Prueba E2E\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/citas"
+          }
+        },
+        {
+          "name": "3. PATCH /citas/:id/checkin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 200 Check-in OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Estado EN_SALA', () => pm.expect(pm.response.json().estado).to.equal('EN_SALA'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/v1/citas/{{citaId}}/checkin"
+          }
+        },
+        {
+          "name": "4. GET /auditoria/citas?codigoReserva=CIT-XXX",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('HTTP 200 con eventos de auditoría', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const eventos = pm.response.json();",
+                  "  pm.expect(eventos).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auditoria/citas?codigoReserva={{codigoReserva}}",
+              "query": [{ "key": "codigoReserva", "value": "{{codigoReserva}}" }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
