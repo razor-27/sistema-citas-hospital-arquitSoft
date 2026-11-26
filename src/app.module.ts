@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 import { Pool } from 'pg';
 import { AgendaModule } from './modulos/agenda';
+import { CitasModule } from './modulos/citas';
 import { MedicosModule } from './modulos/medicos';
 import { validateEnv } from './shared/config/env.validation';
 import {
@@ -21,6 +22,7 @@ import { PG_POOL, REDIS_CLIENT, SharedModule } from './shared/shared.module';
     SharedModule,
     MedicosModule,
     AgendaModule,
+    CitasModule,
   ],
   controllers: [HealthController],
   providers: [
