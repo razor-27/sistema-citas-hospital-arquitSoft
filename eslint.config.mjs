@@ -1,0 +1,38 @@
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
+
+export default tseslint.config(
+  {
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
+  },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  eslintPluginPrettier,
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    // Regla de Dependencia (Clean Architecture): el dominio no puede depender de capas externas ni frameworks
+    files: ['src/modulos/**/dominio/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            '**/infraestructura/**',
+            '**/presentacion/**',
+            '**/aplicacion/**',
+            '@nestjs/*',
+            'ioredis',
+            'pg',
+            'amqplib',
+          ],
+        },
+      ],
+    },
+  },
+);

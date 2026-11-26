@@ -1,0 +1,41 @@
+name: CI - Citas Hospital de Huamanga
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  quality-and-tests:
+    name: Lint, Build y Pruebas Unitarias con Cobertura
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar ESLint
+        run: npm run lint
+
+      - name: Compilar TypeScript
+        run: npm run build
+
+      - name: Ejecutar pruebas unitarias y verificar cobertura (>= 80%)
+        run: npm run test:cov
+
+      - name: Subir reporte de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
